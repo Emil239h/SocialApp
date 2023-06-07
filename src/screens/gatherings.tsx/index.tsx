@@ -5,16 +5,25 @@ import CreateGatheringScreen from './create';
 import EditGatheringScreen from './edit';
 import OverviewGatheringScreen from './overview';
 import { NavigationContainer } from '@react-navigation/native';
+import { GatheringItem, OverviewGatherings } from '../../components/gatherings/overview';
+import { getAllGatherings } from '../../services/gatherings';
 
 
 export default function GatheringScreen({ navigation }:any) {
     const Stack = createNativeStackNavigator();
+    const gatheringsList : any = [];
+
+    const gatherings = getAllGatherings();
+
+    gatherings.forEach((g) => {
+        gatheringsList.push(<GatheringItem data={g} navigation={navigation}/>);
+      });
 
     return (
         <View>
-            <Text>Oversigt</Text>
-            <Button title='edit example' onPress={() => navigation.navigate('EditGathering')}/>
-            <Button title='Create example' onPress={() => navigation.navigate('CreateGathering')}/>
+            <OverviewGatherings>
+                {gatheringsList}    
+            </OverviewGatherings>
         </View>
     );
 }

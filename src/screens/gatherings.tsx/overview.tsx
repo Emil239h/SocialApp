@@ -7,9 +7,9 @@ import EditGatheringScreen from './edit';
 export default function OverviewGatheringScreen() {
 
     return (
-            <View style={styles.container}>
-                <View style={styles.mapContainer}><Text>Rediger begivenhed</Text></View>
-            </View>
+        <View style={styles.container}>
+            <View style={styles.mapContainer}><Text>Rediger begivenhed</Text></View>
+        </View>
     );
 }
 
