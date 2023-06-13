@@ -1,18 +1,17 @@
 import React from 'react';
 import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
-import { Gathering } from '../../services/gatherings';
+import { Gathering, getGathering } from '../../services/gatherings';
 
 
 export default function EditGatheringScreen({route} : any) {
 
-    const item = route.key;
+    const item = getGathering(route.key);
 
     return (
         <View style={styles.container}>
-            <View style={styles.mapContainer}>
+            <View>
                 <Text>Rediger begivenhed</Text>
                 <Text>Navn: {item?.title}</Text>
-            
             </View>
         </View>
     );
@@ -31,9 +30,6 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center',
         alignItems:'center',
-
     },
-    mapContainer:{
-    }
   });
   

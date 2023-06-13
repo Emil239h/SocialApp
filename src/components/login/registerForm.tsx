@@ -1,39 +1,34 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import {CustomBtn, LinkBtn} from '../button';
+import {Styles} from '../../styles/global';
 
-export default function RegisterForm() {
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Registrer</Text>
-            <Text>E-mail</Text>
-            <TextInput />
-            <Text>Gentag E-mail</Text>
-            <TextInput />
-            <Text>Adgangskode</Text>
-            <TextInput />
-            <Text>Gentag Adgangskode</Text>
-            <TextInput />
-            <Text>Allerede oprettet? <Text style={styles.link}>Login nu</Text></Text>
-            <Button title='Registrer'/>
-        </View>
-    );
+export default function RegisterForm({route, swapForm}: any) {
+  return (
+    <View style={Styles.container}>
+      <Text style={Styles.title}>Registrer</Text>
+      <Text style={Styles.label}>E-mail</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>Gentag E-mail</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>Adgangskode</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>Gentag Adgangskode</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>
+        Allerede oprettet?&nbsp;
+        <LinkBtn onPress={() => swapForm(true)}>Login nu</LinkBtn>
+      </Text>
+      <CustomBtn>
+        <Text>Registrer</Text>
+      </CustomBtn>
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-    title:{
-        fontSize: 50,
-    },
-    link:{
-        color: 'blue'
-    },
-    container: {
-        marginTop: 50,
-        flex:1,
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems:'center',
-
-    },
-  });
-  

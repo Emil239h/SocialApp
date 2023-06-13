@@ -5,66 +5,78 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {createContext, useEffect, useMemo, useReducer, useState} from 'react';
+import {StyleSheet} from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+import {AuthContext} from './src/services/authService';
 
 import LoginScreen from './src/screens/auth/login';
-import MainScreen from './src/screens/main';
-
-import { NavigationContainer } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import ProfileScreen from './src/screens/profile';
 import SplashScreen from './src/screens/splash';
-import OverviewGatheringScreen from './src/screens/gatherings.tsx/overview';
 import EditGatheringScreen from './src/screens/gatherings.tsx/edit';
-import GatheringScreen from './src/screens/gatherings.tsx';
 import CreateGatheringScreen from './src/screens/gatherings.tsx/create';
 import MainTabs from './src/screens';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [state, dispatch] = useReducer(
+    (prevState: any, action: any) => {
+      switch (action.type) {
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
+    },
+    {
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
+    },
+  );
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const authContext = useMemo(
+    () => ({
+      signIn: async data => {
+        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+      },
+      signOut: () => dispatch({type: 'SIGN_OUT'}),
+      signUp: async data => {
+        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+      },
+    }),
+    [],
+  );
 
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getUserToken = async () => {
     // testing purposes
-    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
     try {
       // custom logic
       await sleep(500);
       const token = null;
-      setUserToken(token);
+      //dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
     } finally {
       setIsLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getUserToken();
   }, []);
 
@@ -73,65 +85,44 @@ function App(): JSX.Element {
   }
 
   return (
-    <NavigationContainer>
-      {userToken !== null ? (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="SignIn"
-            component={ LoginScreen }
-            options={{
-              title: 'Sign in',
-            }}
-            initialParams={{ setUserToken }}
-          />
-      </Stack.Navigator>
-        ) : (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-              name="Main"
-              component={ MainTabs }
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {state.userToken === null ? (
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen
+              name="SignIn"
+              component={LoginScreen}
               options={{
-              title: 'Kort',
+                title: 'Sign in',
               }}
-              initialParams={{ setUserToken }} 
-          />
-          <Stack.Group screenOptions={{ headerShown: true }}>
-            <Stack.Screen 
-              name="EditGathering"
-              component={ EditGatheringScreen }
-          />
-          <Stack.Screen 
-              name="CreateGathering"
-              component={ CreateGatheringScreen }
-          />
-          </Stack.Group>
-
-      </Stack.Navigator>
-          )}
-    </NavigationContainer>
+            />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator screenOptions={{headerShown: false}}>
+            <Stack.Screen
+              name="Main"
+              component={MainTabs}
+              options={{
+                title: 'Kort',
+              }}
+            />
+            <Stack.Group screenOptions={{headerShown: true}}>
+              <Stack.Screen
+                name="EditGathering"
+                component={EditGatheringScreen}
+              />
+              <Stack.Screen
+                name="CreateGathering"
+                component={CreateGatheringScreen}
+              />
+            </Stack.Group>
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  test:{
-    display:'none'
-  }
-});
+const styles = StyleSheet.create({});
 
 export default App;

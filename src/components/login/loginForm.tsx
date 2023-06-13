@@ -1,39 +1,27 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native"
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {CustomBtn, LinkBtn} from '../button';
+import {Styles, Colors} from '../../styles/global';
+import {AuthContext, setUserToken} from '../../services/authService';
+import {useContext} from 'react';
 
-export default function LoginForm({route, swapForm} : any) {
-    const { setUserToken } = route.params;
+export default function LoginForm({swapForm}: any) {
+  // TODO login skal laves
+  const {signIn} = useContext(AuthContext);
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <Text>E-mail</Text>
-            <TextInput />
-            <Text>Adgangskode</Text>
-            <TextInput />
-            <Text>Ikke oprettet endnu? 
-                <Button title='Opret dig nu' onPress={() =>
-                    swapForm()
-                }/>
-            </Text>
-            <Button title='Login' onPress={() => setUserToken('test')} />
-        </View>
-    )
+  return (
+    <View style={Styles.container}>
+      <Text style={Styles.title}>Login</Text>
+      <Text style={Styles.label}>E-mail</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>Adgangskode</Text>
+      <TextInput style={Styles.textInput} />
+      <Text style={Styles.label}>
+        Ikke oprettet endnu?&nbsp;
+        <LinkBtn onPress={() => swapForm(false)}>Opret dig nu</LinkBtn>
+      </Text>
+      <CustomBtn onPress={() => signIn('test')}>
+        <Text>Login</Text>
+      </CustomBtn>
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-    title:{
-        fontSize: 50,
-    },
-    link:{
-        color: 'blue'
-    },
-    container: {
-        marginTop: 50,
-        flex:1,
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems:'center',
-
-    },
-  });
-  

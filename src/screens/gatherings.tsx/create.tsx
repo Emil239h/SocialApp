@@ -1,20 +1,29 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
-
+import { Button, StyleSheet, Text,TextInput, View } from 'react-native';
+import { Gathering, createGathering } from '../../services/gatherings';
 
 export default function CreateGatheringScreen() {
 
+    const exampleGathering : Gathering = {
+        token: "test_e_1",
+        title: "test_e_1",
+        address: "dd",
+    }
+
     return (
-            <View style={styles.container}>
-                <View style={styles.mapContainer}><Text>Opret begivenhed</Text></View>
+        <View style={styles.container}>
+            <View>
+                <Text>Opret begivenhed</Text>
+                <Button title='Opret begivendhed' onPress={() => createGathering(exampleGathering) }/>    
             </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     title:{
         fontSize: 50,
-    },
+    }, 
     link:{
         color: 'blue'
     },
@@ -24,9 +33,6 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         justifyContent:'center',
         alignItems:'center',
-
     },
-    mapContainer:{
-    }
   });
   

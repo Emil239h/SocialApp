@@ -1,28 +1,29 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
-import CreateGatheringScreen from './create';
-import EditGatheringScreen from './edit';
-import OverviewGatheringScreen from './overview';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import { Button, ScrollView, StyleSheet, View } from 'react-native';
 import { GatheringItem, OverviewGatherings } from '../../components/gatherings/overview';
 import { getAllGatherings } from '../../services/gatherings';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function GatheringScreen({ navigation }:any) {
-    const Stack = createNativeStackNavigator();
-    const gatheringsList : any = [];
-
+    const isFocused = useIsFocused();
     const gatherings = getAllGatherings();
+    const [gatheringsList, setGatheringsList] = useState([]);
 
-    gatherings.forEach((g) => {
-        gatheringsList.push(<GatheringItem data={g} navigation={navigation}/>);
-      });
+    useEffect(() => {
+        if (!isFocused) return;
+        let gL : any= [];
+        gatherings.forEach((g,i) => {
+            gL.push(<GatheringItem key={i} data={g} navigation={navigation}/>);
+          });
+          setGatheringsList(gL);
+        },[isFocused]);
 
     return (
         <View>
-            <OverviewGatherings>
-                {gatheringsList}    
+            <OverviewGatherings navigation={navigation}>
+                {gatheringsList}
             </OverviewGatherings>
         </View>
     );
@@ -43,7 +44,5 @@ const styles = StyleSheet.create({
         alignItems:'center',
 
     },
-    mapContainer:{
-    }
   });
   

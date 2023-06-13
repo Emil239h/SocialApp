@@ -1,33 +1,43 @@
-import React from 'react';
-import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
+import React, {useContext} from 'react';
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import {AuthContext, setUserToken} from '../services/authService';
+import {Styles} from '../styles/global';
+import {CustomBtn} from '../components/button';
 
-export default function ProfileScreen({route} : any) {
-    const { setUserToken } = route.params;
+export default function ProfileScreen({route}: any) {
+  // TODO setUserToken skal sættes til null
+  const {signOut} = useContext(AuthContext);
 
-    return (
-            <View style={styles.container}>
-                <View style={styles.mapContainer}><Text>Profil</Text></View>
-                <Button title='Log ud' onPress={() => setUserToken(null)} />
-            </View>
-    );
+  return (
+    <View style={styles.container}>
+      <View style={Styles.container}>
+        <Text style={Styles.title}>Profil</Text>
+        <Text style={Styles.label}>E-mail</Text>
+        <TextInput style={Styles.textInput} />
+        <Text style={Styles.label}>Navn</Text>
+        <TextInput style={Styles.textInput} />
+        <CustomBtn onPress={() => signOut()}>
+          <Text>Slet bruger</Text>
+        </CustomBtn>
+        <CustomBtn onPress={() => signOut()}>
+          <Text>Log ud</Text>
+        </CustomBtn>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    title:{
-        fontSize: 50,
-    },
-    link:{
-        color: 'blue'
-    },
-    container: {
-        marginTop: 50,
-        flex:1,
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems:'center',
-
-    },
-    mapContainer:{
-    }
-  });
-  
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});
