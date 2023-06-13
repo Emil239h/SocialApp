@@ -7,12 +7,14 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Navbar from '../components/navigation/navbar';
-import NavbarButton from '../components/navigation/navbar-button';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {getAllGatherings, getGathering} from '../services/gatherings';
+import {RoundBtn} from '../components/button';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
+import {Colors} from '../styles/global';
 
-export default function MainScreen() {
+export default function MainScreen({navigation}: any) {
   const exampleData = getAllGatherings();
   const [selected, setSelected] = useState('');
 
@@ -50,11 +52,23 @@ export default function MainScreen() {
     let item = getGathering(selected);
 
     return (
-      <View>
-        <Text
-          style={[styles.itemInfo, selected ? styles.shown : styles.hidden]}>
-          {item?.title}
-        </Text>
+      <View
+        style={[
+          styles.itemInfoContainer,
+          selected ? styles.shown : styles.hidden,
+        ]}>
+        <View style={styles.itemInfo}>
+          <View>
+            <Text style={styles.itemInfoTitle}>{item?.title}</Text>
+            <Text style={styles.itemInfoAddress}>{item?.address}</Text>
+          </View>
+          <RoundBtn
+            onPress={() =>
+              navigation.navigate({name: 'ViewGathering', key: item.token})
+            }>
+            <FontAwesomeIcon icon={faInfo} size={24} />
+          </RoundBtn>
+        </View>
       </View>
     );
   };
@@ -78,13 +92,30 @@ export default function MainScreen() {
   );
 }
 const styles = StyleSheet.create({
-  itemInfo: {
-    width: '80%',
-    height: 50,
+  itemInfoContainer: {
     position: 'absolute',
-    bottom: 50,
-    backgroundColor: 'yellow',
+    height: 80,
+    width: '100%',
+    bottom: 24,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  itemInfo: {
+    width: '95%',
+    height: '100%',
+    borderRadius: 10,
+    backgroundColor: Colors.secondary,
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  itemInfoTitle: {
+    fontSize: 24,
+  },
+  itemInfoAddress: {},
   shown: {
     display: 'flex',
   },

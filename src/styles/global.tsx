@@ -23,9 +23,13 @@ const Styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 10,
   },
+  descriptionInput: {
+    height: 100,
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
+    marginTop: 20,
     width: '80%',
   },
 });

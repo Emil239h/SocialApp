@@ -1,35 +1,48 @@
 import React from 'react';
-import { Button, ScrollView, StyleSheet, Text,TextInput, View } from 'react-native';
-import { Gathering, getGathering } from '../../services/gatherings';
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import {getGathering} from '../../services/gatherings';
+import {Styles} from '../../styles/global';
+import {CustomBtn} from '../../components/button';
 
+export default function EditGatheringScreen({route}: any) {
+  const item = getGathering(route.key);
 
-export default function EditGatheringScreen({route} : any) {
+  return (
+    <View style={styles.container}>
+      <ScrollView style={Styles.container}>
+        <Text style={Styles.title}>{item?.title}</Text>
 
-    const item = getGathering(route.key);
-
-    return (
-        <View style={styles.container}>
-            <View>
-                <Text>Rediger begivenhed</Text>
-                <Text>Navn: {item?.title}</Text>
-            </View>
-        </View>
-    );
+        <Text style={Styles.label}>Navn på begivenhed</Text>
+        <TextInput defaultValue={item?.title} style={Styles.textInput} />
+        <Text style={Styles.label}>Addresse for begivenhed</Text>
+        <TextInput defaultValue={item?.address} style={Styles.textInput} />
+        <Text style={Styles.label}>Beskrivelse af begivenhed</Text>
+        <TextInput
+          multiline
+          textAlignVertical="top"
+          maxLength={512}
+          defaultValue={item?.description}
+          style={[Styles.textInput, Styles.descriptionInput]}
+        />
+        <CustomBtn>
+          <Text>Gem</Text>
+        </CustomBtn>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    title:{
-        fontSize: 50,
-    },
-    link:{
-        color: 'blue'
-    },
-    container: {
-        marginTop: 50,
-        flex:1,
-        flexDirection:'column',
-        justifyContent:'center',
-        alignItems:'center',
-    },
-  });
-  
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+});

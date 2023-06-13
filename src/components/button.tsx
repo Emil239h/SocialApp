@@ -9,6 +9,14 @@ const CustomBtn = ({children, onPress}: any) => {
   );
 };
 
+const RoundBtn = ({children, onPress}: any) => {
+  return (
+    <Pressable style={styles.roundButton} onPress={onPress}>
+      <Text style={styles.buttonText}>{children}</Text>
+    </Pressable>
+  );
+};
+
 const LinkBtn = ({children, onPress}: any) => {
   return (
     <Text style={styles.link} onPress={onPress}>
@@ -28,10 +36,19 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   },
+  roundButton: {
+    borderColor: Colors.dark,
+    borderWidth: 1,
+    borderRadius: 100,
+    height: 55,
+    width: 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonText: {
     color: Colors.light,
     fontSize: 20,
   },
 });
 
-export {CustomBtn, LinkBtn};
+export {CustomBtn, LinkBtn, RoundBtn};

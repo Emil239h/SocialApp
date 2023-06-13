@@ -21,10 +21,12 @@ function OverviewGatherings({navigation, children}: any) {
           <Text style={Styles.title}>Test</Text>
         </View>
         {children}
-        <CustomBtn
-          onPress={() => navigation.navigate({name: 'CreateGathering'})}>
-          Create example
-        </CustomBtn>
+        <View style={styles.container}>
+          <CustomBtn
+            onPress={() => navigation.navigate({name: 'CreateGathering'})}>
+            <Text>Opret ny begivenhed</Text>
+          </CustomBtn>
+        </View>
       </ScrollView>
     </View>
   );
@@ -45,7 +47,7 @@ function GatheringItem({navigation, data}: {navigation: any; data: Gathering}) {
         onPress={() =>
           navigation.navigate({name: 'EditGathering', key: data.token})
         }>
-        Edit example
+        Rediger
       </CustomBtn>
     </View>
   );
@@ -58,6 +60,10 @@ const styles = StyleSheet.create({
   tinyLogo: {
     width: 66,
     height: 58,
+  },
+  container: {
+    marginBottom: 50,
+    width: '80%',
   },
 });
 

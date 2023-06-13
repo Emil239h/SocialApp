@@ -12,13 +12,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {AuthContext} from './src/services/authService';
+import {AuthContext, LogOut, Login} from './src/services/authService';
 
 import LoginScreen from './src/screens/auth/login';
 import SplashScreen from './src/screens/splash';
 import EditGatheringScreen from './src/screens/gatherings.tsx/edit';
 import CreateGatheringScreen from './src/screens/gatherings.tsx/create';
 import MainTabs from './src/screens';
+import ViewGatheringScreen from './src/screens/gatherings.tsx/details';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,9 +52,13 @@ function App(): JSX.Element {
   const authContext = useMemo(
     () => ({
       signIn: async data => {
+        Login(); // TODO lav resten
         dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
-      signOut: () => dispatch({type: 'SIGN_OUT'}),
+      signOut: () => {
+        LogOut();
+        dispatch({type: 'SIGN_OUT'});
+      },
       signUp: async data => {
         dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
@@ -109,11 +114,24 @@ function App(): JSX.Element {
             <Stack.Group screenOptions={{headerShown: true}}>
               <Stack.Screen
                 name="EditGathering"
+                options={{
+                  title: '',
+                }}
                 component={EditGatheringScreen}
               />
               <Stack.Screen
                 name="CreateGathering"
+                options={{
+                  title: '',
+                }}
                 component={CreateGatheringScreen}
+              />
+              <Stack.Screen
+                name="ViewGathering"
+                options={{
+                  title: '',
+                }}
+                component={ViewGatheringScreen}
               />
             </Stack.Group>
           </Stack.Navigator>

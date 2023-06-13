@@ -3,6 +3,8 @@ import {createContext, useMemo} from 'react';
 
 interface User {
   token: string;
+  email?: string;
+  name?: string;
   session: string;
   session_timeout: Date;
 }
@@ -19,6 +21,8 @@ const storeUser = async (user: User) => {
 const getUser = async () => {
   try {
     const value = await AsyncStorage.getItem('@user_session');
+    console.log('user:');
+    console.log(value);
     if (value !== null) {
       return value != null ? JSON.parse(value) : null;
     }
@@ -39,10 +43,15 @@ const Login = () => {
 
   storeUser({
     token: 'tset_token',
+    email: 'tset',
     session: 'test_session',
     session_timeout: timeout,
   });
   return true;
+};
+
+const LogOut = () => {
+  AsyncStorage.removeItem('@user_session');
 };
 
 const Register = () => {
@@ -51,4 +60,13 @@ const Register = () => {
 
 const AuthContext = createContext(null);
 
-export {getUser, storeUser, userToken, setUserToken, AuthContext};
+export {
+  getUser,
+  storeUser,
+  Login,
+  LogOut,
+  userToken,
+  setUserToken,
+  AuthContext,
+};
+export type {User};

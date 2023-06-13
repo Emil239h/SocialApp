@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Button,
   ScrollView,
@@ -7,22 +7,31 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {AuthContext, setUserToken} from '../services/authService';
+import {
+  AuthContext,
+  User,
+  getUser,
+  setUserToken,
+} from '../services/authService';
 import {Styles} from '../styles/global';
 import {CustomBtn} from '../components/button';
 
 export default function ProfileScreen({route}: any) {
-  // TODO setUserToken skal sættes til null
   const {signOut} = useContext(AuthContext);
+  const [profile, setProfile] = useState<User | null>(null);
+
+  useEffect(() => {
+    getUser().then(val => setProfile(val));
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={Styles.container}>
         <Text style={Styles.title}>Profil</Text>
         <Text style={Styles.label}>E-mail</Text>
-        <TextInput style={Styles.textInput} />
+        <TextInput defaultValue={profile?.email} style={Styles.textInput} />
         <Text style={Styles.label}>Navn</Text>
-        <TextInput style={Styles.textInput} />
+        <TextInput defaultValue={profile?.name} style={Styles.textInput} />
         <CustomBtn onPress={() => signOut()}>
           <Text>Slet bruger</Text>
         </CustomBtn>
