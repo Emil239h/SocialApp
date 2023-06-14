@@ -1,38 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {getAllGatherings, getGathering} from '../services/gatherings';
+import {
+  Coordinates,
+  Gathering,
+  getAllGatherings,
+  getGathering,
+} from '../services/gatherings';
 import {RoundBtn} from '../components/button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faInfo} from '@fortawesome/free-solid-svg-icons/faInfo';
+import {faArrowRight} from '@fortawesome/free-solid-svg-icons/faArrowRight';
 import {Colors} from '../styles/global';
+import Geolocation from '@react-native-community/geolocation';
 
 export default function MainScreen({navigation}: any) {
-  const exampleData = getAllGatherings();
+  const [currentLocation, setCurrentLocation] = useState<Coordinates>({
+    // fallback coords
+    latitude: 55.6465,
+    longitude: 12.52617,
+  });
+  const [gatherings, setGatherings] = useState<Gathering[]>([]);
   const [selected, setSelected] = useState('');
 
-  /*
-        test
-
-
-
-
-    */
-
   useEffect(() => {
-    console.log('New marker selected:' + selected);
-  }, [selected]);
+    getAllGatherings().then(val => setGatherings(val));
+    Geolocation.getCurrentPosition(info => {
+      setCurrentLocation(info.coords);
+    });
+  }, []);
 
-  // test end
-
-  const mapMarkers = exampleData.map(item => {
+  const mapMarkers = gatherings.map(item => {
     return (
       <Marker
         pinColor={item.token === selected ? 'purple' : 'green'}
@@ -66,7 +63,11 @@ export default function MainScreen({navigation}: any) {
             onPress={() =>
               navigation.navigate({name: 'ViewGathering', key: item.token})
             }>
-            <FontAwesomeIcon icon={faInfo} size={24} />
+            <FontAwesomeIcon
+              color={Colors.light}
+              icon={faArrowRight}
+              size={24}
+            />
           </RoundBtn>
         </View>
       </View>
@@ -77,11 +78,12 @@ export default function MainScreen({navigation}: any) {
     <View>
       <MapView
         style={styles.mapContainer}
+        customMapStyle={googleCustomMapStyle}
         provider={PROVIDER_GOOGLE}
         showsPointsOfInterest={false}
         initialRegion={{
-          latitude: 55.646517,
-          longitude: 12.526355,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
@@ -91,6 +93,45 @@ export default function MainScreen({navigation}: any) {
     </View>
   );
 }
+
+// generated on 'https://mapstyle.withgoogle.com'
+const googleCustomMapStyle = [
+  {
+    featureType: 'administrative',
+    elementType: 'geometry',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'poi',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'road',
+    elementType: 'labels.icon',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+  {
+    featureType: 'transit',
+    stylers: [
+      {
+        visibility: 'off',
+      },
+    ],
+  },
+];
+
 const styles = StyleSheet.create({
   itemInfoContainer: {
     position: 'absolute',
@@ -105,7 +146,7 @@ const styles = StyleSheet.create({
     width: '95%',
     height: '100%',
     borderRadius: 10,
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     paddingHorizontal: 25,
     paddingVertical: 10,
     flex: 1,
@@ -114,22 +155,17 @@ const styles = StyleSheet.create({
   },
   itemInfoTitle: {
     fontSize: 24,
+    color: Colors.light,
   },
-  itemInfoAddress: {},
+  itemInfoAddress: {
+    color: Colors.light,
+  },
   shown: {
     display: 'flex',
   },
   hidden: {
     display: 'none',
   },
-
-  title: {
-    fontSize: 50,
-  },
-  link: {
-    color: 'blue',
-  },
-  container: {},
   mapContainer: {
     height: '100%',
   },

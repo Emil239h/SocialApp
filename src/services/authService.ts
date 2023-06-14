@@ -1,72 +1,62 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createContext, useMemo} from 'react';
+import {ApiUrl} from '../styles/global';
+import {storeUser} from './user';
 
-interface User {
-  token: string;
-  email?: string;
-  name?: string;
-  session: string;
-  session_timeout: Date;
+async function Login(email: string, password: string) {
+  return fetch(ApiUrl + '/users/user_login.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      // TODO fix
+      email: 'emileldahljensen@gmail.com',
+      password: 'qqq',
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      if (json.status == 200) {
+        storeUser(json.content);
+        return json.content;
+      } else {
+        return null;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      return null;
+    });
 }
-
-const storeUser = async (user: User) => {
-  try {
-    const jsonValue = JSON.stringify(user);
-    await AsyncStorage.setItem('@user_session', jsonValue);
-  } catch (e) {
-    // TODO lav en catch
-  }
-};
-
-const getUser = async () => {
-  try {
-    const value = await AsyncStorage.getItem('@user_session');
-    console.log('user:');
-    console.log(value);
-    if (value !== null) {
-      return value != null ? JSON.parse(value) : null;
-    }
-  } catch (e) {
-    // TODO lav en catch
-  }
-};
-
-let userToken = null;
-
-const setUserToken = (newVal: string | null) => {
-  userToken = newVal;
-};
-
-const Login = () => {
-  let timeout = new Date();
-  timeout.setMonth(12);
-
-  storeUser({
-    token: 'tset_token',
-    email: 'tset',
-    session: 'test_session',
-    session_timeout: timeout,
-  });
-  return true;
-};
 
 const LogOut = () => {
   AsyncStorage.removeItem('@user_session');
 };
 
-const Register = () => {
-  return true;
-};
+async function Register(email: string, password: string) {
+  return fetch(ApiUrl + '/users/user_create.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      return json.status == 200; // 200 OK
+    })
+    .catch(error => {
+      console.error(error);
+      return false;
+    });
+}
 
 const AuthContext = createContext(null);
 
-export {
-  getUser,
-  storeUser,
-  Login,
-  LogOut,
-  userToken,
-  setUserToken,
-  AuthContext,
-};
-export type {User};
+export {Login, Register, LogOut, AuthContext};

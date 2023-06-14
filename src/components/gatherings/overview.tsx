@@ -18,7 +18,7 @@ function OverviewGatherings({navigation, children}: any) {
     <View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={Styles.container}>
-          <Text style={Styles.title}>Test</Text>
+          <Text style={Styles.title}>Begivenheder</Text>
         </View>
         {children}
         <View style={styles.container}>

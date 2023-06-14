@@ -5,13 +5,17 @@ import {
   GatheringItem,
   OverviewGatherings,
 } from '../../components/gatherings/overview';
-import {getAllGatherings} from '../../services/gatherings';
+import {Gathering, getAllGatherings} from '../../services/gatherings';
 import {useIsFocused} from '@react-navigation/native';
 
 export default function GatheringScreen({navigation}: any) {
   const isFocused = useIsFocused();
-  const gatherings = getAllGatherings();
+  const [gatherings, setGatherings] = useState<Gathering[]>([]);
   const [gatheringsList, setGatheringsList] = useState([]);
+
+  useEffect(() => {
+    getAllGatherings().then(val => setGatherings(val));
+  }, []);
 
   useEffect(() => {
     if (!isFocused) return;
@@ -20,7 +24,7 @@ export default function GatheringScreen({navigation}: any) {
       gL.push(<GatheringItem key={i} data={g} navigation={navigation} />);
     });
     setGatheringsList(gL);
-  }, [isFocused]);
+  }, [gatherings, isFocused]);
 
   return (
     <View>
@@ -30,19 +34,3 @@ export default function GatheringScreen({navigation}: any) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 50,
-  },
-  link: {
-    color: 'blue',
-  },
-  container: {
-    marginTop: 50,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

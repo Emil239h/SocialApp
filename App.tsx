@@ -5,14 +5,13 @@
  * @format
  */
 
-import {createContext, useEffect, useMemo, useReducer, useState} from 'react';
+import {useEffect, useMemo, useReducer, useState} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {AuthContext, LogOut, Login} from './src/services/authService';
+import {AuthContext, LogOut, Login, Register} from './src/services/authService';
 
 import LoginScreen from './src/screens/auth/login';
 import SplashScreen from './src/screens/splash';
@@ -22,7 +21,6 @@ import MainTabs from './src/screens';
 import ViewGatheringScreen from './src/screens/gatherings.tsx/details';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 function App(): JSX.Element {
   const [state, dispatch] = useReducer(
@@ -51,16 +49,24 @@ function App(): JSX.Element {
 
   const authContext = useMemo(
     () => ({
-      signIn: async data => {
-        Login(); // TODO lav resten
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+      signIn: async (email: string, password: string) => {
+        let user = await Login(email, password); // TODO lav resten
+        if (user !== null) {
+          dispatch({type: 'SIGN_IN', token: user.session});
+        }
       },
       signOut: () => {
         LogOut();
         dispatch({type: 'SIGN_OUT'});
       },
-      signUp: async data => {
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+      signUp: async (email: string, password: string) => {
+        let success = await Register(email, password);
+        if (success) {
+          let user = await Login(email, password); // TODO lav resten
+          if (user !== null) {
+            dispatch({type: 'SIGN_IN', token: user.session});
+          }
+        }
       },
     }),
     [],

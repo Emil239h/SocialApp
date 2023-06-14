@@ -10,6 +10,7 @@ import {faMugSaucer} from '@fortawesome/free-solid-svg-icons/faMugSaucer';
 import {faUser} from '@fortawesome/free-solid-svg-icons/faUser';
 import {faMapLocation} from '@fortawesome/free-solid-svg-icons/faMapLocation';
 import {faCalendarDays} from '@fortawesome/free-solid-svg-icons/faCalendarDays';
+import {Colors} from '../styles/global';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,10 @@ export default function MainTabs({route}: any) {
           }
 
           return (
-            <FontAwesomeIcon icon={faIcon} color={focused ? '#000' : '#f00'} />
+            <FontAwesomeIcon
+              icon={faIcon}
+              color={focused ? Colors.link : Colors.dark}
+            />
           );
         },
       })}>

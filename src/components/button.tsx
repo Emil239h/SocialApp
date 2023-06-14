@@ -1,9 +1,9 @@
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {Colors} from '../styles/global';
 
-const CustomBtn = ({children, onPress}: any) => {
+const CustomBtn = ({children, onPress, style}: any) => {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={[styles.button, style]} onPress={onPress}>
       <Text style={styles.buttonText}>{children}</Text>
     </Pressable>
   );
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   roundButton: {
-    borderColor: Colors.dark,
+    borderColor: Colors.light,
     borderWidth: 1,
     borderRadius: 100,
     height: 55,

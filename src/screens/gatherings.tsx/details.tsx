@@ -1,43 +1,43 @@
 import React from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import {Gathering, createGathering} from '../../services/gatherings';
+import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Gathering,
+  createGathering,
+  getGathering,
+} from '../../services/gatherings';
+import {CustomBtn} from '../../components/button';
+import {Styles} from '../../styles/global';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHouse} from '@fortawesome/free-solid-svg-icons/faHouse';
+import {faClock} from '@fortawesome/free-solid-svg-icons/faClock';
 
-export default function ViewGatheringScreen() {
-  const exampleGathering: Gathering = {
-    token: 'test_e_1',
-    title: 'test_e_1',
-    address: 'dd',
-    coords: {
-      latitude: 55,
-      longitude: 12,
-    },
-  };
+export default function ViewGatheringScreen({route}: any) {
+  const item = getGathering(route.key);
 
   return (
     <View style={styles.container}>
-      <View>
-        <Text>Opret begivenhed</Text>
-        <Button
-          title="Opret begivendhed"
-          onPress={() => createGathering(exampleGathering)}
-        />
-      </View>
+      <ScrollView style={Styles.container}>
+        <Text style={Styles.title}>{item?.title}</Text>
+        <Text style={Styles.label}>
+          <FontAwesomeIcon icon={faHouse} />
+          &nbsp;{item?.address}
+        </Text>
+        <Text style={Styles.label}>
+          <FontAwesomeIcon icon={faClock} />
+          &nbsp;** Tidspunkt
+        </Text>
+        <CustomBtn>
+          <Text>Tilmæld</Text>
+        </CustomBtn>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 50,
-  },
-  link: {
-    color: 'blue',
-  },
   container: {
-    marginTop: 50,
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });

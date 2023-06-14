@@ -1,37 +1,37 @@
+import {ApiUrl} from '../styles/global';
+
 interface Gathering {
   token: string;
   title?: string;
   description?: string;
-  creator?: number;
   address?: string;
   coords: Coordinates;
+  creator?: Creator;
 }
 interface Coordinates {
   latitude: number;
   longitude: number;
 }
+interface Creator {
+  token: string;
+  name: string;
+  phone: string;
+  email: string;
+}
 
-const exampleData: Gathering[] = [
-  {
-    token: 'test_token_1',
-    title: 'test1',
-    description: 'test description',
-    creator: 1,
-    address: 'test address 1',
-    coords: {latitude: 55.646518, longitude: 12.526356},
-  },
-  {
-    token: 'test_token_2',
-    title: 'test 2',
-    description: 'test 2 description',
-    creator: 2,
-    address: 'test address 2',
-    coords: {latitude: 55.646518, longitude: 12.525615},
-  },
-];
+let gatherings: Gathering[] = [];
 
-function getAllGatherings(): Gathering[] {
-  return exampleData;
+async function getAllGatherings(): Promise<Gathering[]> {
+  return fetch(ApiUrl + '/events/event_get.php')
+    .then(response => response.json())
+    .then(json => {
+      gatherings = <Gathering[]>json.content;
+      return gatherings;
+    })
+    .catch(error => {
+      console.error(error);
+      return <Gathering[]>[];
+    });
 }
 
 function getMyGatherings() {
@@ -47,12 +47,12 @@ function getMyGatherings() {
   ];
 }
 
-function getGathering(token: string) {
-  return exampleData.find(x => x.token == token);
+function getGathering(token: string): Gathering | undefined {
+  return gatherings.find(x => x.token == token);
 }
 
 function createGathering(g: Gathering) {
-  exampleData.push(g);
+  gatherings.push(g);
 }
 
 function updateGathering() {}
@@ -67,4 +67,4 @@ export {
   updateGathering,
   deleteGathering,
 };
-export type {Gathering};
+export type {Gathering, Coordinates};

@@ -1,11 +1,14 @@
 import {StyleSheet} from 'react-native';
 
+const ApiUrl = 'http://api.eldahl.dk/';
+
 const Colors = {
   primary: '#4E4187',
   secondary: '#F7EBE8',
   dark: '#0F110C',
   light: '#FFF',
   link: 'blue',
+  error: 'red',
 };
 
 const Styles = StyleSheet.create({
@@ -34,4 +37,4 @@ const Styles = StyleSheet.create({
   },
 });
 
-export {Colors, Styles};
+export {Colors, Styles, ApiUrl};
