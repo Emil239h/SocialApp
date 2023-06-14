@@ -55,7 +55,7 @@ function createGathering(g: Gathering) {
   gatherings.push(g);
 }
 
-function updateGathering() {}
+function editGathering() {}
 
 function deleteGathering() {}
 
@@ -64,7 +64,7 @@ export {
   getMyGatherings,
   getGathering,
   createGathering,
-  updateGathering,
+  editGathering,
   deleteGathering,
 };
 export type {Gathering, Coordinates};
