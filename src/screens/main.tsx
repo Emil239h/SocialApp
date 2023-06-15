@@ -74,10 +74,6 @@ export default function MainScreen({navigation}: any) {
   };
 
   useEffect(() => {
-    getAllGatherings().then(val => {
-      setGatherings(val);
-    });
-
     Geolocation.getCurrentPosition(info => {
       setCurrentLocation(info.coords);
     });
@@ -89,9 +85,12 @@ export default function MainScreen({navigation}: any) {
     }
     getAllGatherings().then(val => {
       setGatherings(val);
-      setMarkers(mapMarkers());
     });
-  }, [isFocused, gatherings]);
+  }, [isFocused]);
+
+  useEffect(() => {
+    setMarkers(mapMarkers());
+  }, [gatherings]);
 
   return (
     <View>
