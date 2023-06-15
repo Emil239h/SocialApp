@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import {Gathering, getGathering} from '../../services/gatherings';
+import {editGathering, getGathering} from '../../services/gatherings';
 import {Colors, Styles} from '../../styles/global';
 import {CustomBtn} from '../../components/button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass';
 import {getGeoOnAddr} from '../../services/maps';
 
-export default function EditGatheringScreen({route}: any) {
+export default function EditGatheringScreen({route, navigation}: any) {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [address, setAddress] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
@@ -22,7 +22,7 @@ export default function EditGatheringScreen({route}: any) {
     const results = await getGeoOnAddr(address);
 
     if (results.length > 0) {
-      setAddress(results[0].address_components[0].long_name);
+      setAddress(results[0].formatted_address);
       return results[0];
     }
     return null;
@@ -37,14 +37,30 @@ export default function EditGatheringScreen({route}: any) {
   };
 
   const onSubmit = async () => {
-    //TODO udskift
-    const addressResult = null; //await addressLookup();
+    const addressResult = await addressLookup();
 
     let titleValid = titleIsValid();
-    let addressValid = addressResult === null;
+    let addressValid = addressResult !== null;
 
     setTitleInvalid(!titleValid);
     setAddressInvalid(!addressValid);
+
+    if (titleValid && addressValid && addressResult) {
+      let success = await editGathering({
+        title: title,
+        address: addressResult.formatted_address,
+        description: description,
+        token: route.key,
+        coords: {
+          latitude: addressResult.geometry.location.lat,
+          longitude: addressResult.geometry.location.lng,
+        },
+      });
+
+      if (success) {
+        navigation.navigate({name: 'Begivenheder'});
+      }
+    }
   };
 
   useEffect(() => {
@@ -94,7 +110,7 @@ export default function EditGatheringScreen({route}: any) {
           onChangeText={v => setDescription(v)}
           style={[Styles.textInput, Styles.descriptionInput]}
         />
-        <CustomBtn onPress={onSubmit}>
+        <CustomBtn onPress={() => onSubmit()}>
           <Text>Gem</Text>
         </CustomBtn>
       </ScrollView>

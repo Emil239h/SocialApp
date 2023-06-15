@@ -1,6 +1,5 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {
   GatheringItem,
   OverviewGatherings,
@@ -15,7 +14,7 @@ export default function GatheringScreen({navigation}: any) {
 
   useEffect(() => {
     getAllGatherings().then(val => setGatherings(val));
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     if (!isFocused) return;

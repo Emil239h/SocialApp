@@ -1,4 +1,5 @@
 import {ApiUrl} from '../styles/global';
+import {getUser} from './user';
 
 interface Gathering {
   token: string;
@@ -55,7 +56,38 @@ function createGathering(g: Gathering) {
   gatherings.push(g);
 }
 
-function editGathering() {}
+async function editGathering(gathering: Gathering) {
+  let user = await getUser();
+
+  return fetch(ApiUrl + '/events/event_update.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      user_token: user.token,
+      session: user.session,
+      token: gathering.token,
+      title: gathering.title,
+      address: gathering.address,
+      description: gathering.description,
+      latitude: gathering.coords.latitude,
+      longitude: gathering.coords.longitude,
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      if (json.status == 200) {
+        return true;
+      }
+      return false;
+    })
+    .catch(() => {
+      console.error('unable to update gathering');
+      return false;
+    });
+}
 
 function deleteGathering() {}
 

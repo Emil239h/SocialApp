@@ -1,18 +1,8 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import {useEffect, useMemo, useReducer, useState} from 'react';
 import {StyleSheet} from 'react-native';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import {AuthContext, LogOut, Login, Register} from './src/services/authService';
-
 import LoginScreen from './src/screens/auth/login';
 import SplashScreen from './src/screens/splash';
 import EditGatheringScreen from './src/screens/gatherings.tsx/edit';

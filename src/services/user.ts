@@ -15,7 +15,7 @@ const storeUser = async (user: User) => {
     const jsonValue = JSON.stringify(user);
     await AsyncStorage.setItem('@user_session', jsonValue);
   } catch (e) {
-    // TODO lav en catch
+    console.error('unable to store user');
   }
 };
 
@@ -26,7 +26,7 @@ const getUser = async () => {
       return value != null ? JSON.parse(value) : null;
     }
   } catch (e) {
-    // TODO lav en catch
+    console.error('unable to get user');
   }
 };
 
@@ -52,8 +52,8 @@ async function editUser(user: User) {
       }
       return false;
     })
-    .catch(error => {
-      console.error(error);
+    .catch(() => {
+      console.error('unable to update user');
       return false;
     });
 }

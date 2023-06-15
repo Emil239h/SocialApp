@@ -3,7 +3,6 @@ import React from 'react';
 import MainScreen from './main';
 import GatheringScreen from './gatherings.tsx';
 import ProfileScreen from './profile';
-import {Text} from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMugSaucer} from '@fortawesome/free-solid-svg-icons/faMugSaucer';
