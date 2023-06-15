@@ -26,10 +26,6 @@ function OverviewGatherings({navigation, children}: any) {
 function GatheringItem({navigation, data}: {navigation: any; data: Gathering}) {
   return (
     <View style={Styles.container}>
-      <Image
-        style={styles.tinyLogo}
-        src={'http://eldahl.dk/wallpaper-example.a68a0289f42ddf4eed9c.jpg'}
-      />
       <Text>{data?.token}</Text>
       <Text>{data?.title}</Text>
       <Text>{data?.description}</Text>

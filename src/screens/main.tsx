@@ -12,38 +12,59 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons/faArrowRight';
 import {Colors} from '../styles/global';
 import Geolocation from '@react-native-community/geolocation';
+import {useIsFocused} from '@react-navigation/native';
 
 export default function MainScreen({navigation}: any) {
+  const isFocused = useIsFocused();
   const [currentLocation, setCurrentLocation] = useState<Coordinates>({
     // fallback coords
     latitude: 55.6465,
     longitude: 12.52617,
   });
   const [gatherings, setGatherings] = useState<Gathering[]>([]);
+  const [markers, setMarkers] = useState<any[]>([]);
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    getAllGatherings().then(val => setGatherings(val));
+    getAllGatherings().then(val => {
+      setGatherings(val);
+    });
+
     Geolocation.getCurrentPosition(info => {
       setCurrentLocation(info.coords);
     });
   }, []);
 
-  const mapMarkers = gatherings.map(item => {
-    return (
-      <Marker
-        pinColor={item.token === selected ? 'purple' : 'green'}
-        //key={testItem.key}
-        id={item.token}
-        key={`${item.token}-${item.token === selected ? 'active' : 'inactive'}`}
-        coordinate={item.coords}
-        onSelect={() => {
-          setSelected(item.token);
-        }}
-        onPress={() => setSelected(item.token)}
-      />
-    );
-  });
+  useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
+    getAllGatherings().then(val => {
+      setGatherings(val);
+      setMarkers(mapMarkers());
+    });
+
+    setMarkers(mapMarkers());
+  }, [isFocused, gatherings]);
+
+  const mapMarkers = () =>
+    gatherings.map(item => {
+      return (
+        <Marker
+          pinColor={item.token === selected ? 'purple' : 'green'}
+          //key={testItem.key}
+          id={item.token}
+          key={`${item.token}-${
+            item.token === selected ? 'active' : 'inactive'
+          }`}
+          coordinate={item.coords}
+          onSelect={() => {
+            setSelected(item.token);
+          }}
+          onPress={() => setSelected(item.token)}
+        />
+      );
+    });
 
   const detailsPreview = () => {
     let item = getGathering(selected);
@@ -87,7 +108,7 @@ export default function MainScreen({navigation}: any) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-        {mapMarkers}
+        {markers}
       </MapView>
       {detailsPreview()}
     </View>

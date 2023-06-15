@@ -52,8 +52,39 @@ function getGathering(token: string): Gathering | undefined {
   return gatherings.find(x => x.token === token);
 }
 
-function createGathering(g: Gathering) {
-  gatherings.push(g);
+async function createGathering(gathering: Gathering) {
+  //gatherings.push(gathering);
+
+  let user = await getUser();
+
+  return fetch(ApiUrl + '/events/event_create.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      user_token: user.token,
+      session: user.session,
+      title: gathering.title,
+      address: gathering.address,
+      description: gathering.description,
+      latitude: gathering.coords.latitude,
+      longitude: gathering.coords.longitude,
+    }),
+  })
+    .then(response => response.json())
+    .then(json => {
+      if (json.status === 201) {
+        // 201 Created
+        return true;
+      }
+      return false;
+    })
+    .catch(() => {
+      console.error('unable to create gathering');
+      return false;
+    });
 }
 
 async function editGathering(gathering: Gathering) {

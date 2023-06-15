@@ -32,7 +32,6 @@ export default function EditGatheringScreen({route, navigation}: any) {
     if (title === '') {
       return false;
     }
-
     return true;
   };
 
