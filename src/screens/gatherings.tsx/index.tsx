@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import {
   GatheringItem,
   OverviewGatherings,
 } from '../../components/gatherings/overview';
-import {Gathering, getAllGatherings} from '../../services/gatherings';
+import {Gathering, getMyGatherings} from '../../services/gatherings';
 import {useIsFocused} from '@react-navigation/native';
+import {getUser} from '../../services/user';
 
 export default function GatheringScreen({navigation}: any) {
   const isFocused = useIsFocused();
@@ -13,13 +14,21 @@ export default function GatheringScreen({navigation}: any) {
   const [gatheringsList, setGatheringsList] = useState([]);
 
   useEffect(() => {
-    getAllGatherings().then(val => setGatherings(val));
+    if (!isFocused) {
+      return;
+    }
+    getUser().then(user => {
+      if (user) {
+        getMyGatherings().then(val => setGatherings(val));
+      }
+    });
   }, [isFocused]);
 
   useEffect(() => {
     if (!isFocused) {
       return;
     }
+
     let gL: any = [];
     gatherings.forEach((g, i) => {
       gL.push(<GatheringItem key={i} data={g} navigation={navigation} />);
@@ -28,10 +37,8 @@ export default function GatheringScreen({navigation}: any) {
   }, [navigation, gatherings, isFocused]);
 
   return (
-    <View>
-      <OverviewGatherings navigation={navigation}>
-        {gatheringsList}
-      </OverviewGatherings>
-    </View>
+    <OverviewGatherings navigation={navigation}>
+      {gatheringsList}
+    </OverviewGatherings>
   );
 }

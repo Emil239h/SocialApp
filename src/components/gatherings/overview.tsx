@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Gathering} from '../../services/gatherings';
 import {Styles} from '../../styles/global';
 import {CustomBtn} from '../button';
@@ -26,10 +26,9 @@ function OverviewGatherings({navigation, children}: any) {
 function GatheringItem({navigation, data}: {navigation: any; data: Gathering}) {
   return (
     <View style={Styles.container}>
-      <Text>{data?.token}</Text>
-      <Text>{data?.title}</Text>
-      <Text>{data?.description}</Text>
+      <Text style={styles.title}>{data?.title}</Text>
       <Text>{data?.address}</Text>
+      <Text>{data?.description}</Text>
       <CustomBtn
         onPress={() =>
           navigation.navigate({name: 'EditGathering', key: data.token})
@@ -51,6 +50,9 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 50,
     width: '80%',
+  },
+  title: {
+    fontSize: 24,
   },
 });
 

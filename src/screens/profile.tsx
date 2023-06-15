@@ -9,6 +9,7 @@ export default function ProfileScreen({navigation}: any) {
   const {signOut} = useContext(AuthContext);
   const [profile, setProfile] = useState<User | null>(null);
 
+  const [isGuest, setIsGuest] = useState<boolean | undefined>(undefined);
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
 
@@ -49,41 +50,44 @@ export default function ProfileScreen({navigation}: any) {
   };
 
   useEffect(() => {
-    getUser().then(val => {
-      setProfile(val);
-      setPhone(val.phone);
-      setName(val.name);
-    });
+    getUser()
+      .then(val => {
+        setProfile(val);
+        setPhone(val.phone);
+        setName(val.name);
+      })
+      .catch(() => {
+        setIsGuest(true);
+      });
   }, []);
 
   return (
     <View style={styles.container}>
       <View style={Styles.container}>
         <Text style={Styles.title}>Profil</Text>
-        <Text style={Styles.label}>E-mail</Text>
-        <Text style={[Styles.textInput, styles.disabled]}>
-          {profile?.email}
-        </Text>
-        <Text style={Styles.label}>Telefon</Text>
-        <TextInput
-          inputMode="tel"
-          defaultValue={profile?.phone}
-          onChangeText={v => setPhone(v)}
-          style={[Styles.textInput, phoneInvalid ? styles.invalid : {}]}
-        />
-        <Text style={Styles.label}>Navn</Text>
-        <TextInput
-          defaultValue={profile?.name}
-          onChangeText={v => setName(v)}
-          style={[Styles.textInput, nameInvalid ? styles.invalid : {}]}
-        />
-        <CustomBtn onPress={onSubmit}>
-          <Text>Gem</Text>
-        </CustomBtn>
-        <View style={styles.additionalContainer}>
-          <CustomBtn onPress={() => signOut()}>
-            <Text>Slet bruger</Text>
+        <View style={[isGuest === true ? Styles.hidden : {}]}>
+          <Text style={Styles.label}>E-mail</Text>
+          <Text style={[Styles.textInput, styles.disabled]}>
+            {profile?.email}
+          </Text>
+          <Text style={Styles.label}>Telefon</Text>
+          <TextInput
+            inputMode="tel"
+            defaultValue={profile?.phone}
+            onChangeText={v => setPhone(v)}
+            style={[Styles.textInput, phoneInvalid ? styles.invalid : {}]}
+          />
+          <Text style={Styles.label}>Navn</Text>
+          <TextInput
+            defaultValue={profile?.name}
+            onChangeText={v => setName(v)}
+            style={[Styles.textInput, nameInvalid ? styles.invalid : {}]}
+          />
+          <CustomBtn onPress={onSubmit}>
+            <Text>Gem</Text>
           </CustomBtn>
+        </View>
+        <View style={styles.additionalContainer}>
           <CustomBtn onPress={() => signOut()}>
             <Text>Log ud</Text>
           </CustomBtn>

@@ -9,6 +9,7 @@ import {faClock} from '@fortawesome/free-solid-svg-icons/faClock';
 
 export default function ViewGatheringScreen({route}: any) {
   const item = getGathering(route.key);
+  console.log(item);
 
   return (
     <View style={styles.container}>
@@ -20,7 +21,7 @@ export default function ViewGatheringScreen({route}: any) {
         </Text>
         <Text style={Styles.label}>
           <FontAwesomeIcon icon={faClock} />
-          &nbsp;** Tidspunkt
+          &nbsp;{item?.starttime}
         </Text>
         <CustomBtn>
           <Text>Tilmæld</Text>

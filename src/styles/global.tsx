@@ -35,6 +35,9 @@ const Styles = StyleSheet.create({
     marginTop: 20,
     width: '80%',
   },
+  hidden: {
+    display: 'none',
+  },
 });
 
 export {Colors, Styles, ApiUrl};

@@ -7,7 +7,7 @@ import {AuthContext} from '../../services/authService';
 export default function LoginForm({swapForm}: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {signIn} = useContext(AuthContext);
+  const {signIn, signInAsGuest} = useContext(AuthContext);
 
   return (
     <View style={Styles.container}>
@@ -30,6 +30,9 @@ export default function LoginForm({swapForm}: any) {
       </Text>
       <CustomBtn onPress={() => signIn(email, password)}>
         <Text>Login</Text>
+      </CustomBtn>
+      <CustomBtn onPress={() => signInAsGuest()}>
+        <Text>Fortsæt som gæst</Text>
       </CustomBtn>
     </View>
   );

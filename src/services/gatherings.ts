@@ -6,6 +6,7 @@ interface Gathering {
   title?: string;
   description?: string;
   address?: string;
+  starttime?: string;
   coords: Coordinates;
   creator?: Creator;
 }
@@ -35,17 +36,20 @@ async function getAllGatherings(): Promise<Gathering[]> {
     });
 }
 
-function getMyGatherings() {
-  return [
-    {
-      title: 'test1',
-      description: 'test description',
-      creator: 1,
-      address: 'test address 1',
-      lat: 52.1,
-      long: 55.2,
-    },
-  ];
+async function getMyGatherings(): Promise<Gathering[]> {
+  let user = await getUser();
+  return fetch(
+    `${ApiUrl}/events/event_get_own.php?user_token=${user.token}&session=${user.session}`,
+  )
+    .then(response => response.json())
+    .then(json => {
+      gatherings = <Gathering[]>json.content;
+      return gatherings;
+    })
+    .catch(error => {
+      console.error(error);
+      return <Gathering[]>[];
+    });
 }
 
 function getGathering(token: string): Gathering | undefined {
@@ -53,10 +57,7 @@ function getGathering(token: string): Gathering | undefined {
 }
 
 async function createGathering(gathering: Gathering) {
-  //gatherings.push(gathering);
-
   let user = await getUser();
-
   return fetch(ApiUrl + '/events/event_create.php', {
     method: 'POST',
     headers: {
@@ -68,6 +69,7 @@ async function createGathering(gathering: Gathering) {
       session: user.session,
       title: gathering.title,
       address: gathering.address,
+      starttime: gathering.starttime,
       description: gathering.description,
       latitude: gathering.coords.latitude,
       longitude: gathering.coords.longitude,
@@ -102,6 +104,7 @@ async function editGathering(gathering: Gathering) {
       token: gathering.token,
       title: gathering.title,
       address: gathering.address,
+      starttime: gathering.starttime,
       description: gathering.description,
       latitude: gathering.coords.latitude,
       longitude: gathering.coords.longitude,

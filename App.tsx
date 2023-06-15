@@ -8,6 +8,7 @@ import EditGatheringScreen from './src/screens/gatherings.tsx/edit';
 import CreateGatheringScreen from './src/screens/gatherings.tsx/create';
 import MainTabs from './src/screens';
 import ViewGatheringScreen from './src/screens/gatherings.tsx/details';
+import {getUser} from './src/services/user';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,10 +40,13 @@ function App(): JSX.Element {
   const authContext = useMemo(
     () => ({
       signIn: async (email: string, password: string) => {
-        let user = await Login(email, password); // TODO lav resten
+        let user = await Login(email, password);
         if (user !== null) {
           dispatch({type: 'SIGN_IN', token: user.session});
         }
+      },
+      signInAsGuest: async () => {
+        dispatch({type: 'SIGN_IN', token: 'guest'});
       },
       signOut: () => {
         LogOut();
@@ -51,7 +55,7 @@ function App(): JSX.Element {
       signUp: async (email: string, password: string) => {
         let success = await Register(email, password);
         if (success) {
-          let user = await Login(email, password); // TODO lav resten
+          let user = await Login(email, password);
           if (user !== null) {
             dispatch({type: 'SIGN_IN', token: user.session});
           }
@@ -67,10 +71,16 @@ function App(): JSX.Element {
     // testing purposes
     const sleep = ms => new Promise(r => setTimeout(r, ms));
     try {
-      // custom logic
-      await sleep(500);
-      const token = null;
-      //dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+      await sleep(500); // show spash screen
+      getUser().then(user => {
+        if (user) {
+          let date = new Date().getTime();
+          let exp_date = new Date(user.session_exp).getTime();
+          if (exp_date > date) {
+            dispatch({type: 'SIGN_IN', token: user.session});
+          }
+        }
+      });
     } finally {
       setIsLoading(false);
     }

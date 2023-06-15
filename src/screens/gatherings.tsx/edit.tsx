@@ -11,6 +11,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [address, setAddress] = useState<string | undefined>(undefined);
   const [description, setDescription] = useState<string | undefined>(undefined);
+  const [date, setDate] = useState<string | undefined>(undefined);
 
   const [titleInvalid, setTitleInvalid] = useState(false);
   const [addressInvalid, setAddressInvalid] = useState(false);
@@ -48,6 +49,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
       let success = await editGathering({
         title: title,
         address: addressResult.formatted_address,
+        starttime: date,
         description: description,
         token: route.key,
         coords: {
@@ -66,6 +68,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
     const item = getGathering(route.key);
     setTitle(item?.title);
     setAddress(item?.address);
+    setDate(item?.starttime);
     setDescription(item?.description);
   }, [route.key]);
 
@@ -99,7 +102,12 @@ export default function EditGatheringScreen({route, navigation}: any) {
             />
           </CustomBtn>
         </View>
-
+        <Text style={Styles.label}>Tidspunk for begivenhed</Text>
+        <TextInput
+          value={date}
+          onChangeText={v => setDate(v)}
+          style={Styles.textInput}
+        />
         <Text style={Styles.label}>Beskrivelse af begivenhed</Text>
         <TextInput
           multiline
