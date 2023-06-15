@@ -11,9 +11,8 @@ async function Login(email: string, password: string) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      // TODO fix
-      email: 'emileldahljensen@gmail.com',
-      password: 'qqq',
+      email: email,
+      password: password,
     }),
   })
     .then(response => response.json())

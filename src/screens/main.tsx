@@ -25,28 +25,6 @@ export default function MainScreen({navigation}: any) {
   const [markers, setMarkers] = useState<any[]>([]);
   const [selected, setSelected] = useState('');
 
-  useEffect(() => {
-    getAllGatherings().then(val => {
-      setGatherings(val);
-    });
-
-    Geolocation.getCurrentPosition(info => {
-      setCurrentLocation(info.coords);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!isFocused) {
-      return;
-    }
-    getAllGatherings().then(val => {
-      setGatherings(val);
-      setMarkers(mapMarkers());
-    });
-
-    setMarkers(mapMarkers());
-  }, [isFocused, gatherings]);
-
   const mapMarkers = () =>
     gatherings.map(item => {
       return (
@@ -94,6 +72,26 @@ export default function MainScreen({navigation}: any) {
       </View>
     );
   };
+
+  useEffect(() => {
+    getAllGatherings().then(val => {
+      setGatherings(val);
+    });
+
+    Geolocation.getCurrentPosition(info => {
+      setCurrentLocation(info.coords);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
+    getAllGatherings().then(val => {
+      setGatherings(val);
+      setMarkers(mapMarkers());
+    });
+  }, [isFocused, gatherings]);
 
   return (
     <View>

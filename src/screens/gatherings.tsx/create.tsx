@@ -74,7 +74,7 @@ export default function CreateGatheringScreen({navigation}: any) {
         signOut();
       }
     });
-  }, []);
+  }, [signOut]);
 
   return (
     <View style={styles.container}>
