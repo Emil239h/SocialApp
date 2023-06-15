@@ -31,7 +31,7 @@ async function getAllGatherings(): Promise<Gathering[]> {
       return gatherings;
     })
     .catch(error => {
-      console.error(error);
+      console.error('unable to get gatherings');
       return <Gathering[]>[];
     });
 }
@@ -46,8 +46,8 @@ async function getMyGatherings(): Promise<Gathering[]> {
       gatherings = <Gathering[]>json.content;
       return gatherings;
     })
-    .catch(error => {
-      console.error(error);
+    .catch(() => {
+      console.error('unable to get user gatherings');
       return <Gathering[]>[];
     });
 }

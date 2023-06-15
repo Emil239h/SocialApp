@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyCA1Z6GWzyuHzCFqt4HhdJNV8zLMV_dRNk'; // TODO fjern key
+const API_KEY = 'AIzaSyCA1Z6GWzyuHzCFqt4HhdJNV8zLMV_dRNk';
 const ApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
 
 interface addressComponent {
