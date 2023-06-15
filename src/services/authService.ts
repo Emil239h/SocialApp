@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createContext, useMemo} from 'react';
+import {createContext} from 'react';
 import {ApiUrl} from '../styles/global';
 import {storeUser} from './user';
 
@@ -18,7 +18,7 @@ async function Login(email: string, password: string) {
   })
     .then(response => response.json())
     .then(json => {
-      if (json.status == 200) {
+      if (json.status === 200) {
         storeUser(json.content);
         return json.content;
       } else {
@@ -49,7 +49,7 @@ async function Register(email: string, password: string) {
   })
     .then(response => response.json())
     .then(json => {
-      return json.status == 200; // 200 OK
+      return json.status === 200; // 200 OK
     })
     .catch(error => {
       console.error(error);

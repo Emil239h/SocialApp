@@ -24,7 +24,7 @@ export default function ProfileScreen({navigation}: any) {
     return true;
   };
   const nameIsValid = () => {
-    if (name == '') {
+    if (name === '') {
       return false;
     }
 

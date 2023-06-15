@@ -46,7 +46,7 @@ async function editUser(user: User) {
   })
     .then(response => response.json())
     .then(json => {
-      if (json.status == 200) {
+      if (json.status === 200) {
         storeUser(user);
         return true;
       }

@@ -1,8 +1,8 @@
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {Text, TextInput, View} from 'react-native';
 import {CustomBtn, LinkBtn} from '../button';
-import {Styles, Colors} from '../../styles/global';
+import {Styles} from '../../styles/global';
 import {AuthContext} from '../../services/authService';
-import {useContext, useState} from 'react';
 
 export default function LoginForm({swapForm}: any) {
   const [email, setEmail] = useState('');

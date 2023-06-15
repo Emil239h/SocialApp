@@ -1,17 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {CustomBtn, LinkBtn} from '../button';
 import {Colors, Styles} from '../../styles/global';
-import {AuthContext, Register} from '../../services/authService';
+import {AuthContext} from '../../services/authService';
 
-export default function RegisterForm({route, swapForm}: any) {
+export default function RegisterForm({swapForm}: any) {
   const {signUp} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
@@ -36,7 +29,7 @@ export default function RegisterForm({route, swapForm}: any) {
   };
 
   const passwordIsValid = () => {
-    if (password == '') {
+    if (password === '') {
       return false;
     }
 

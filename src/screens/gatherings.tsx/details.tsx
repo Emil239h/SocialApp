@@ -1,10 +1,6 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {
-  Gathering,
-  createGathering,
-  getGathering,
-} from '../../services/gatherings';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {getGathering} from '../../services/gatherings';
 import {CustomBtn} from '../../components/button';
 import {Styles} from '../../styles/global';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';

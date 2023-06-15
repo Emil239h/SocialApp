@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import LoginForm from '../../components/login/loginForm';
 import RegisterForm from '../../components/login/registerForm';
 

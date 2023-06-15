@@ -49,7 +49,7 @@ function getMyGatherings() {
 }
 
 function getGathering(token: string): Gathering | undefined {
-  return gatherings.find(x => x.token == token);
+  return gatherings.find(x => x.token === token);
 }
 
 function createGathering(g: Gathering) {
@@ -78,7 +78,7 @@ async function editGathering(gathering: Gathering) {
   })
     .then(response => response.json())
     .then(json => {
-      if (json.status == 200) {
+      if (json.status === 200) {
         return true;
       }
       return false;

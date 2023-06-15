@@ -17,13 +17,15 @@ export default function GatheringScreen({navigation}: any) {
   }, [isFocused]);
 
   useEffect(() => {
-    if (!isFocused) return;
+    if (!isFocused) {
+      return;
+    }
     let gL: any = [];
     gatherings.forEach((g, i) => {
       gL.push(<GatheringItem key={i} data={g} navigation={navigation} />);
     });
     setGatheringsList(gL);
-  }, [gatherings, isFocused]);
+  }, [navigation, gatherings, isFocused]);
 
   return (
     <View>

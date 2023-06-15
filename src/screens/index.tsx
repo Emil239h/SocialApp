@@ -13,7 +13,7 @@ import {Colors} from '../styles/global';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainTabs({route}: any) {
+export default function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({

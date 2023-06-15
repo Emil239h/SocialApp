@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {Gathering, createGathering} from '../../services/gatherings';
 import {Styles} from '../../styles/global';
 import {CustomBtn} from '../../components/button';

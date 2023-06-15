@@ -1,5 +1,4 @@
-import {useEffect, useMemo, useReducer, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect, useMemo, useReducer, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {AuthContext, LogOut, Login, Register} from './src/services/authService';
@@ -136,7 +135,5 @@ function App(): JSX.Element {
     </AuthContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default App;

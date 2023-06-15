@@ -1,4 +1,5 @@
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, Pressable} from 'react-native';
 import {Colors} from '../styles/global';
 
 const CustomBtn = ({children, onPress, style}: any) => {

@@ -16,7 +16,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
   const [addressInvalid, setAddressInvalid] = useState(false);
 
   const addressLookup = async () => {
-    if (address == '') {
+    if (address === '') {
       return null;
     }
     const results = await getGeoOnAddr(address);
@@ -29,7 +29,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
   };
 
   const titleIsValid = () => {
-    if (title == '') {
+    if (title === '') {
       return false;
     }
 
@@ -68,7 +68,7 @@ export default function EditGatheringScreen({route, navigation}: any) {
     setTitle(item?.title);
     setAddress(item?.address);
     setDescription(item?.description);
-  }, []);
+  }, [route.key]);
 
   return (
     <View style={styles.container}>
