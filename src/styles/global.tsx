@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const ApiUrl = 'http://api.eldahl.dk/';
+const ApiUrl = 'https://mathiasspiegelhauer.dk/social/';
 
 const Colors = {
   primary: '#4E4187',
